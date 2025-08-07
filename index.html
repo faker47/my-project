@@ -2,45 +2,168 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>NHÀ CÁI ĐẾN TỪ CHÂU ÂU - ONBET</title>
-  <link rel="stylesheet" href="style.css">
+  <title>🎉 Trò chơi Đố Vui</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #fdf6e3;
+      padding: 50px;
+      text-align: center;
+    }
+
+    .quiz-container {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      max-width: 600px;
+      margin: auto;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      margin-bottom: 20px;
+    }
+
+    .question {
+      font-size: 20px;
+      margin-bottom: 20px;
+    }
+
+    .answers {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .answers button {
+      padding: 10px;
+      border: none;
+      background: #eee;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s;
+      font-size: 16px;
+    }
+
+    .answers button:hover {
+      background: #ddd;
+    }
+
+    #score {
+      margin-top: 30px;
+      font-size: 18px;
+    }
+
+    #next-btn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      background: #4CAF50;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    #next-btn:hover {
+      background: #45a049;
+    }
+  </style>
 </head>
 <body>
 
-  <header class="hero">
-    <div class="container">
-      <h1>✨ OnBet uy tín làm nên thương hiệu✨</h1>
-      <p>Nạp/rút trong vòng 3 phút</p>
-      <a href="https://onbet.com/vi/" class="btn">Đăng ký ngay</a>
+  <div class="quiz-container">
+    <h1>🧠 Đố Vui Có Thưởng</h1>
+    <div class="question" id="question">Câu hỏi sẽ hiển thị ở đây</div>
+    <div class="answers" id="answers">
+      <!-- Các nút đáp án sẽ được thêm bằng JS -->
     </div>
-  </header>
+    <button id="next-btn" style="display:none;">Câu tiếp theo ➡️</button>
+    <div id="score">Điểm: 0</div>
+  </div>
 
-  <section class="product">
-    <div class="container">
-      <img src="https://i.postimg.cc/k41vt5gy/logo-onbet-x-a-ph-ng.png">
-      <div class="product-info">
-        <h2>TRANG GAME UY TÍN NHẤT THỊ TRƯỜNG HIỆN NAY</h2>
-        <p>Nạp/rút nhanh chỉ được tính bằng giây</p>
-        <ul>
-          <li>✅ Uư đãi khuyến mãi cực khủng</li>
-          <li>✅ Hoàn trả cao nhất thị trường</li>
-          <li>✅ Sảnh game đa dạng-phong phú</li>
-          <li>✅ SLOT-BẮN CÁ-GAME BÀI-CASINO-SPORTS-E SPORTS-ĐÁ GÀ..vv</li>
-        </ul>
-        <h3 class="price">ĐĂNG KÝ NHẬT 88K MIỄN PHÍ</h3>
-        <a href="https://onbet.com" class="btn" id="buy">LIÊN HỆ CSKH LIVECHAT</a>
-        <a href="https://onbet.com" class="btn" id="buy">FACEBOOK</a>
-        <a href="https://onbet.com" class="btn" id="buy">ZALO</a>
-        <a href="https://onbet.com" class="btn" id="buy">TELEGRAM</a>
-      </div>
-    </div>
-  </section>
+  <script>
+    const questions = [
+      {
+        question: "Miền Trung tỉnh nào đẹp nhất?",
+        answers: ["HÀ TĨNH", "QUÃNG NAM", "ĐÀ NẴNG", "QUẢNG NGÃI"],
+        correct: 0
+      },
+      {
+        question: "Tại sao lại nói là Hà tĩnh?",
+        answers: ["TỎI", "NA", "cadi", "liza"],
+        correct: 1
+      },
+      {
+        question: "Loài vật nào được mệnh danh là vua của rừng xanh?",
+        answers: ["Sư tử", "Hổ", "Voi", "Báo"],
+        correct: 0
+      },
+      {
+        question: "Màu trong cờ Việt Nam là gì?",
+        answers: ["Xanh và đỏ", "Đỏ và vàng", "Vàng và xanh", "Trắng và đỏ"],
+        correct: 1
+      },
+    ];
 
-  <footer>
-    <p>© 2025 ONBET. Liên hệ: <a href="onbet@gmail.com">onbet@gmail.com</a></p>
-  </footer>
+    let currentQuestion = 0;
+    let score = 0;
 
+    const questionEl = document.getElementById("question");
+    const answersEl = document.getElementById("answers");
+    const scoreEl = document.getElementById("score");
+    const nextBtn = document.getElementById("next-btn");
+
+    function showQuestion(index) {
+      const q = questions[index];
+      questionEl.textContent = q.question;
+      answersEl.innerHTML = "";
+      q.answers.forEach((answer, i) => {
+        const btn = document.createElement("button");
+        btn.textContent = answer;
+        btn.onclick = () => checkAnswer(i);
+        answersEl.appendChild(btn);
+      });
+      nextBtn.style.display = "none";
+    }
+
+    function checkAnswer(selectedIndex) {
+      const correctIndex = questions[currentQuestion].correct;
+      const buttons = answersEl.querySelectorAll("button");
+
+      buttons.forEach((btn, i) => {
+        btn.disabled = true;
+        if (i === correctIndex) {
+          btn.style.backgroundColor = "#4CAF50"; // xanh lá
+          btn.style.color = "white";
+        }
+        if (i === selectedIndex && i !== correctIndex) {
+          btn.style.backgroundColor = "#f44336"; // đỏ
+          btn.style.color = "white";
+        }
+      });
+
+      if (selectedIndex === correctIndex) {
+        score++;
+        scoreEl.textContent = `Điểm: ${score}`;
+      }
+
+      nextBtn.style.display = "inline-block";
+    }
+
+    nextBtn.onclick = () => {
+      currentQuestion++;
+      if (currentQuestion < questions.length) {
+        showQuestion(currentQuestion);
+      } else {
+        questionEl.textContent = "🎉 Phần thưởng của bạn đó là XG!";
+        answersEl.innerHTML = "";
+        nextBtn.style.display = "none";
+      }
+    }
+
+    // Bắt đầu game
+    showQuestion(currentQuestion);
+  </script>
 </body>
 </html>
-
